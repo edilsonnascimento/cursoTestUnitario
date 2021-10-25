@@ -1,0 +1,10 @@
+Definição
+
+1 - O que são testes unitários?
+Avalia a menor porção do código o métodos.
+Devendo isolar as dependencias externas.
+Divido em cenário, ação e validação.
+
+
+
+
