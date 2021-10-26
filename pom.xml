@@ -14,11 +14,13 @@
     </properties>
 
     <dependencies>
+
+        <!-- SCOPE TEST-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
-            <scope></scope>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
