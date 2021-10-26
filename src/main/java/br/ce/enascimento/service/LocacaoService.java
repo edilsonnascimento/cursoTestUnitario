@@ -10,7 +10,11 @@ import static br.ce.enascimento.utils.DataUtils.adicionarDias;
 
 public class LocacaoService {
 
-    public Locacao alugarFilme(Usuario usuario, Filme filme){
+    public Locacao alugarFilme(Usuario usuario, Filme filme) throws Exception {
+
+        if(filme.getEstoque() == 0){
+            throw new Exception("Filme não tem estoque");
+        }
         Locacao locacao = new Locacao();
         locacao.setFilme(filme);
         locacao.setUsuario(usuario);
