@@ -3,7 +3,15 @@ Definição
 1 - O que são testes unitários?
 Avalia a menor porção do código o métodos.
 Devendo isolar as dependencias externas.
-Divido em cenário, ação e validação.
+Divido em cenário, ação e verificação.
+
+2 - FIRST(Fast, Idependent, Repeatable, Self-Virifying, Timely).
+Timely: criado no tempo correto.
+
+3 - JUnit
+Framework para testes unitários.
+
+
 
 
 
