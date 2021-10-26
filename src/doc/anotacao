@@ -5,11 +5,16 @@ Avalia a menor porção do código o métodos.
 Devendo isolar as dependencias externas.
 Divido em cenário, ação e verificação.
 
-2 - FIRST(Fast, Idependent, Repeatable, Self-Virifying, Timely).
+2 - FIRST(Fast, Idependent, Isolado, Repeatable, Self-Virifying, Timely).
 Timely: criado no tempo correto.
 
 3 - JUnit
 Framework para testes unitários.
+
+4 - Rules
+Utilizado quando temos mais de um assert no mesmo teste unitários.
+Alterar comportamento dos testes.
+
 
 
 
