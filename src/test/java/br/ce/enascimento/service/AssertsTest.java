@@ -1,11 +1,12 @@
 package br.ce.enascimento.service;
 
-import static org.junit.Assert.*;
-
 import br.ce.enascimento.entidades.Funcionario;
 import br.ce.enascimento.entidades.Pessoa;
 import br.ce.enascimento.entidades.Usuario;
 import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.*;
 
 public class AssertsTest {
 
@@ -58,12 +59,9 @@ public class AssertsTest {
         Usuario usuario = new Usuario("Usuario não Nulo");
         assertNotNull(usuario);
 
-
-
-
-
-
-
+        //AssertThat
+        assertEquals("bola", "bola");
+        assertThat("bola".equals("bola"), is(true));
 
     }
 }

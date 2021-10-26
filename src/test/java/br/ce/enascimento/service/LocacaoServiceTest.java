@@ -4,10 +4,13 @@ import br.ce.enascimento.entidades.Filme;
 import br.ce.enascimento.entidades.Locacao;
 import br.ce.enascimento.entidades.Usuario;
 import br.ce.enascimento.utils.DataUtils;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class LocacaoServiceTest {
 
@@ -22,8 +25,8 @@ public class LocacaoServiceTest {
         Locacao locacao = service.alugarFilme(usuario,filme);
 
         //verificacao
-        Assert.assertTrue(locacao.getValor() == 5.0);
-        Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
-        Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)));
+        assertThat(locacao.getValor(), is(equalTo(5.0)));
+        assertThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
+        assertThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), is(true));
     }
 }
