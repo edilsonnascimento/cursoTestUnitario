@@ -14,10 +14,15 @@ Framework para testes unitários.
 4 - Rules
 Utilizado quando temos mais de um assert no mesmo teste unitários.
 Alterar comportamento dos testes.
+@Rule
+public ErrorCollector error = new ErrorCollector();
+Altera comportamento de erros.
+@Rule
+public ExpectedException exception = ExpectedException.none();
 
+5 - Teste de Exceptions
+- Elegante: captura apenas a exceptions, não usa a mensagem da exception, portando deve ter uma exceptions especifica;
+- Nova: captura mensagem e exceptin, porem tem menos controles que a Robusta;
+- Robusta: captura mensagem e exceptin, pode continuar os testes, mais controle do teste.
 
-
-
-
-
-
+Video 11-00:00

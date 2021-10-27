@@ -3,6 +3,8 @@ package br.ce.enascimento.service;
 import br.ce.enascimento.entidades.Filme;
 import br.ce.enascimento.entidades.Locacao;
 import br.ce.enascimento.entidades.Usuario;
+import br.ce.enascimento.exception.FilmeSemEstoqueException;
+import br.ce.enascimento.exception.LocadoraException;
 import br.ce.enascimento.utils.DataUtils;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,6 +15,7 @@ import java.util.Date;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class LocacaoServiceTest {
 
@@ -29,7 +32,6 @@ public class LocacaoServiceTest {
         Usuario usuario = new Usuario("Nome do Usuario");
         Filme filme = new Filme("Titulo Filme", 2, 5.0);
         Locacao locacao = null;
-
         //acao
         try {
             locacao = service.alugarFilme(usuario,filme);
@@ -42,29 +44,39 @@ public class LocacaoServiceTest {
         }
     }
 
-    @Test(expected = Exception.class)
-    public void deveLancarExcepetionFilmeSemEstoque() throws Exception{
-
+    @Test(expected = FilmeSemEstoqueException.class)
+    public void deveLancarExcepetionFilmeSemEstoque() throws FilmeSemEstoqueException, LocadoraException {
         //cenario
         LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Nome do Usuario");
         Filme filme = new Filme("Titulo Filme", 0, 5.0);
-
         //acao
         service.alugarFilme(usuario,filme);
     }
 
     @Test
-    public void deveLancarExcepetionFilmeSemEstoque_2() throws Exception {
-
+    public void deveLancarExpetionFilmeVazio() throws FilmeSemEstoqueException, LocadoraException {
         //cenario
         LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Nome do Usuario");
-        Filme filme = new Filme("Titulo Filme", 0, 5.0);
-        exception.expect(Exception.class);
-        exception.expectMessage("Filme não tem estoque");
-
+        exception.expect(LocadoraException.class);
+        exception.expectMessage("Filme não pode ser vazio!");
         //acao
-        service.alugarFilme(usuario,filme);
+        service.alugarFilme(usuario,null);
+    }
+
+    @Test
+    public void deveLancarExcepetionUsuarioVazio() throws FilmeSemEstoqueException {
+        //cenario
+        LocacaoService service = new LocacaoService();
+        Usuario usuario = null;
+        Filme filme = new Filme("Titulo Filme", 0, 5.0);
+        //acao
+        try {
+            service.alugarFilme(usuario,filme);
+            fail();
+        } catch (LocadoraException e) {
+           assertThat(e.getMessage(), is("Usuário não pode ser vazio!"));
+        }
     }
 }
