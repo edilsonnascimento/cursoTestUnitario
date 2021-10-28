@@ -29,3 +29,8 @@ public ExpectedException exception = ExpectedException.none();
 São métodos executados antes e depois a cada teste, caso a variável se estatica ela não é instaciada a cada teste.
 BeforeClass: método estatico executado antes de tudo.
 AfterClass: método estatico executado antes de tudo.
+
+7 - Ordem de teste
+Anotar a classe com @FixMethodOrder(MethodSorters.NAME_ASCENDING)
+Colocar o nome dos metodos em ordem alfabética.
+
