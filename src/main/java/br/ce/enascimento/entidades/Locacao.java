@@ -50,7 +50,16 @@ public class Locacao {
     }
 
     public Double getValorTotal() {
-        return valorTotal;
+        return aplicarDesconto();
+    }
+
+    private Double aplicarDesconto() {
+        Desconto desconto = new Desconto();
+        double totalDesconto=0;
+        for (int i = 0; i < filmes.size(); i++) {
+            totalDesconto += desconto.descontar(filmes.get(i).getPrecoLocacao(), i);
+        }
+        return valorTotal - totalDesconto;
     }
 
     public boolean filmeSemEstoque(){
