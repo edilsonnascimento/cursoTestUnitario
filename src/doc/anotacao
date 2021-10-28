@@ -34,3 +34,5 @@ AfterClass: método estatico executado antes de tudo.
 Anotar a classe com @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 Colocar o nome dos metodos em ordem alfabética.
 
+8 - TDD
+Teste primeiro Depos Desenlvolva.
