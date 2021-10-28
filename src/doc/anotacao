@@ -25,4 +25,7 @@ public ExpectedException exception = ExpectedException.none();
 - Nova: captura mensagem e exceptin, porem tem menos controles que a Robusta;
 - Robusta: captura mensagem e exceptin, pode continuar os testes, mais controle do teste.
 
-Video 11-00:00
+6 - Before e After
+São métodos executados antes e depois a cada teste, caso a variável se estatica ela não é instaciada a cada teste.
+BeforeClass: método estatico executado antes de tudo.
+AfterClass: método estatico executado antes de tudo.

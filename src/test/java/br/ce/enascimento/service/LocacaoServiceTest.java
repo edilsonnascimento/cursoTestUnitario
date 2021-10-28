@@ -6,6 +6,7 @@ import br.ce.enascimento.entidades.Usuario;
 import br.ce.enascimento.exception.FilmeSemEstoqueException;
 import br.ce.enascimento.exception.LocadoraException;
 import br.ce.enascimento.utils.DataUtils;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -19,16 +20,21 @@ import static org.junit.Assert.fail;
 
 public class LocacaoServiceTest {
 
+    private LocacaoService service;
+
     @Rule
     public ErrorCollector error = new ErrorCollector();
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
+    @Before
+    public void setup(){
+        service = new LocacaoService();
+    }
     @Test
     public void testarLocacao() {
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Nome do Usuario");
         Filme filme = new Filme("Titulo Filme", 2, 5.0);
         Locacao locacao = null;
@@ -47,7 +53,6 @@ public class LocacaoServiceTest {
     @Test(expected = FilmeSemEstoqueException.class)
     public void deveLancarExcepetionFilmeSemEstoque() throws FilmeSemEstoqueException, LocadoraException {
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Nome do Usuario");
         Filme filme = new Filme("Titulo Filme", 0, 5.0);
         //acao
@@ -57,7 +62,6 @@ public class LocacaoServiceTest {
     @Test
     public void deveLancarExpetionFilmeVazio() throws FilmeSemEstoqueException, LocadoraException {
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Nome do Usuario");
         exception.expect(LocadoraException.class);
         exception.expectMessage("Filme não pode ser vazio!");
@@ -68,12 +72,10 @@ public class LocacaoServiceTest {
     @Test
     public void deveLancarExcepetionUsuarioVazio() throws FilmeSemEstoqueException {
         //cenario
-        LocacaoService service = new LocacaoService();
-        Usuario usuario = null;
         Filme filme = new Filme("Titulo Filme", 0, 5.0);
         //acao
         try {
-            service.alugarFilme(usuario,filme);
+            service.alugarFilme(null,filme);
             fail();
         } catch (LocadoraException e) {
            assertThat(e.getMessage(), is("Usuário não pode ser vazio!"));
