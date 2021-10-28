@@ -7,22 +7,23 @@ import br.ce.enascimento.exception.FilmeSemEstoqueException;
 import br.ce.enascimento.exception.LocadoraException;
 
 import java.util.Date;
+import java.util.List;
 
 import static br.ce.enascimento.utils.DataUtils.adicionarDias;
 
 public class LocacaoService {
 
-    public Locacao alugarFilme(Usuario usuario, Filme filme) throws FilmeSemEstoqueException, LocadoraException {
+    public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException {
 
-        if(filme == null) throw new LocadoraException("Filme não pode ser vazio!");
+        if(filmes == null|| filmes.isEmpty()) throw new LocadoraException("Filmes não podem ser vazio!");
+        Locacao locacao = new Locacao(filmes);
         if(usuario == null) throw new LocadoraException("Usuário não pode ser vazio!");
-        if(filme.getEstoque() == 0) throw new FilmeSemEstoqueException();
+        if(locacao.filmeSemEstoque()) throw new FilmeSemEstoqueException();
 
-        Locacao locacao = new Locacao();
-        locacao.setFilme(filme);
+        locacao.setFilmes(filmes);
         locacao.setUsuario(usuario);
         locacao.setDataLocacao(new Date());
-        locacao.setValor(filme.getPrecoLocacao());
+        locacao.setValorTotal();
 
         Date dataEntrega = new Date();
         dataEntrega = adicionarDias(dataEntrega, 1);

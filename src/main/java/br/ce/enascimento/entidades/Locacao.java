@@ -1,6 +1,5 @@
 package br.ce.enascimento.entidades;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,27 +7,23 @@ import java.util.List;
 public class Locacao {
 
     private Usuario usuario;
-    private Filme filme;
+    private List<Filme> filmes;
     private Date dataLocacao;
     private Date dataRetorno;
-    private Double valor;
+    private Double valorTotal;
 
-
-    public Usuario getUsuario() {
-        return usuario;
+    public Locacao(List<Filme> filmes) {
+        this.filmes = filmes;
     }
+
 
     public Locacao setUsuario(Usuario usuario) {
         this.usuario = usuario;
         return this;
     }
 
-    public Filme getFilme() {
-        return filme;
-    }
-
-    public Locacao setFilme(Filme filme) {
-        this.filme = filme;
+    public Locacao setFilmes(List<Filme> filmes) {
+        this.filmes = filmes;
         return this;
     }
 
@@ -50,12 +45,18 @@ public class Locacao {
         return this;
     }
 
-    public Double getValor() {
-        return valor;
+    public void setValorTotal() {
+        this.valorTotal = filmes.stream().mapToDouble(Filme::getPrecoLocacao).sum();
     }
 
-    public Locacao setValor(Double valor) {
-        this.valor = valor;
-        return this;
+    public Double getValorTotal() {
+        return valorTotal;
+    }
+
+    public boolean filmeSemEstoque(){
+        int soma = 0;
+        for (Filme filme : this.filmes)
+            if(filme.getEstoque() == 0) soma += 1;
+        return soma > 0;
     }
 }
