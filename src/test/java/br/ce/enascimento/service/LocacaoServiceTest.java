@@ -6,6 +6,7 @@ import br.ce.enascimento.entidades.Usuario;
 import br.ce.enascimento.exception.FilmeSemEstoqueException;
 import br.ce.enascimento.exception.LocadoraException;
 import br.ce.enascimento.utils.DataUtils;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -13,12 +14,12 @@ import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class LocacaoServiceTest {
 
@@ -34,8 +35,11 @@ public class LocacaoServiceTest {
     public void setup(){
         service = new LocacaoService();
     }
+
     @Test
     public void deve_AlugarFilmes() {
+        Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SUNDAY));
+
         //cenario
         Usuario usuario = new Usuario("Nome do Usuario");
         Filme filme1 = new Filme("Titulo Filme1", 2, 5.0);
@@ -91,70 +95,5 @@ public class LocacaoServiceTest {
         } catch (LocadoraException e) {
            assertThat(e.getMessage(), is("Usuário não pode ser vazio!"));
         }
-    }
-
-    @Test
-    public void deve_Descontar_25_PorCento_NoAluguelDo_3_Filme() throws FilmeSemEstoqueException, LocadoraException {
-        //cenario
-        Usuario usuario = new Usuario("Nome do Usuario");
-        Filme filme1 = new Filme("Titulo Filme1", 2, 30.0);
-        Filme filme2 = new Filme("Titulo Filme2", 2, 20.0);
-        Filme filme3 = new Filme("Titulo Filme3", 2, 10.0);
-        List filmes = Arrays.asList(filme1, filme2, filme3);
-
-        //acao
-        Locacao locacao = service.alugarFilme(usuario, filmes);
-        //avaliacao
-        assertThat(locacao.getValorTotal(), is(57.5));
-    }
-
-    @Test
-    public void deve_Descontar_50_PorCento_NoAluguelDo_4_Filme() throws FilmeSemEstoqueException, LocadoraException {
-        //cenario
-        Usuario usuario = new Usuario("Nome do Usuario");
-        Filme filme1 = new Filme("Titulo Filme1", 2, 10.0);
-        Filme filme2 = new Filme("Titulo Filme2", 2, 10.0);
-        Filme filme3 = new Filme("Titulo Filme3", 2, 10.0);
-        Filme filme4 = new Filme("Titulo Filme4", 2, 10.0);
-        List filmes = Arrays.asList(filme1, filme2, filme3, filme4);
-
-        //acao
-        Locacao locacao = service.alugarFilme(usuario, filmes);
-        //avaliacao
-        assertThat(locacao.getValorTotal(), is(32.5));
-    }
-
-    @Test
-    public void deve_Descontar_75_PorCento_NoAluguelDo_5_Filme() throws FilmeSemEstoqueException, LocadoraException {
-        //cenario
-        Usuario usuario = new Usuario("Nome do Usuario");
-        Filme filme1 = new Filme("Titulo Filme1", 2, 10.0);
-        Filme filme2 = new Filme("Titulo Filme2", 2, 10.0);
-        Filme filme3 = new Filme("Titulo Filme3", 2, 10.0);
-        Filme filme4 = new Filme("Titulo Filme4", 2, 10.0);
-        Filme filme5 = new Filme("Titulo Filme5", 2, 10.0);
-        List filmes = Arrays.asList(filme1, filme2, filme3, filme4, filme5);
-
-        //acao
-        Locacao locacao = service.alugarFilme(usuario, filmes);
-        //avaliacao
-        assertThat(locacao.getValorTotal(), is(35.0));
-    }
-    @Test
-    public void deve_Descontar_100_PorCento_NoAluguelDo_6_Filme() throws FilmeSemEstoqueException, LocadoraException {
-        //cenario
-        Usuario usuario = new Usuario("Nome do Usuario");
-        Filme filme1 = new Filme("Titulo Filme1", 2, 10.0);
-        Filme filme2 = new Filme("Titulo Filme2", 2, 10.0);
-        Filme filme3 = new Filme("Titulo Filme3", 2, 10.0);
-        Filme filme4 = new Filme("Titulo Filme4", 2, 10.0);
-        Filme filme5 = new Filme("Titulo Filme5", 2, 10.0);
-        Filme filme6 = new Filme("Titulo Filme6", 2, 10.0);
-        List filmes = Arrays.asList(filme1, filme2, filme3, filme4, filme5, filme6);
-
-        //acao
-        Locacao locacao = service.alugarFilme(usuario, filmes);
-        //avaliacao
-        assertThat(locacao.getValorTotal(), is(35.0));
     }
 }

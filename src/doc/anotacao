@@ -36,3 +36,12 @@ Colocar o nome dos metodos em ordem alfabética.
 
 8 - TDD
 Teste primeiro Depos Desenlvolva.
+
+9 - @Ignore
+@Ignore: ignorar o teste manualmente
+Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SUNDAY));
+Ignira o teste no sabado.
+
+10 - Data-driven testing
+Teste orientado a dados, também conhecido como teste orientado a tabela ou teste parametrizado.
+Agrupar testes.
