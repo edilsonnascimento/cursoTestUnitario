@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Locacao {
 
+    private static final int ZERO = 0;
     private Usuario usuario;
     private List<Filme> filmes;
     private Date dataLocacao;
@@ -56,16 +57,15 @@ public class Locacao {
     private Double aplicarDesconto() {
         Desconto desconto = new Desconto();
         double totalDesconto=0;
-        for (int i = 0; i < filmes.size(); i++) {
-            totalDesconto += desconto.descontar(filmes.get(i).getPrecoLocacao(), i);
-        }
+        for (int posicao = 0; posicao < filmes.size(); posicao++)
+            totalDesconto += desconto.descontar(filmes.get(posicao).getPrecoLocacao(), posicao);
         return valorTotal - totalDesconto;
     }
 
     public boolean filmeSemEstoque(){
-        int soma = 0;
-        for (Filme filme : this.filmes)
-            if(filme.getEstoque() == 0) soma += 1;
-        return soma > 0;
+        return ZERO < filmes.stream()
+                .filter(filme -> filme.getEstoque() == ZERO)
+                .mapToInt(Filme::getEstoque)
+                .count();
     }
 }

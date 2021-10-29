@@ -5,6 +5,8 @@ import br.ce.enascimento.entidades.Locacao;
 import br.ce.enascimento.entidades.Usuario;
 import br.ce.enascimento.exception.FilmeSemEstoqueException;
 import br.ce.enascimento.exception.LocadoraException;
+import br.ce.enascimento.matchers.CoreMatcherProprio;
+import br.ce.enascimento.matchers.DiaSemanaMatcher;
 import br.ce.enascimento.utils.DataUtils;
 import org.junit.Assume;
 import org.junit.Before;
@@ -18,8 +20,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static br.ce.enascimento.matchers.CoreMatcherProprio.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import static org.junit.Assume.*;
 
 public class LocacaoServiceTest {
 
@@ -38,7 +42,7 @@ public class LocacaoServiceTest {
 
     @Test
     public void deve_AlugarFilmes() {
-        Assume.assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SUNDAY));
+        assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SUNDAY));
 
         //cenario
         Usuario usuario = new Usuario("Nome do Usuario");
@@ -63,7 +67,7 @@ public class LocacaoServiceTest {
         //cenario
         Usuario usuario = new Usuario("Nome do Usuario");
         Filme filme1 = new Filme("Titulo Filme1", 2, 5.0);
-        Filme filme2 = new Filme("Titulo Filme2", 2, 4.0);
+        Filme filme2 = new Filme("Titulo Filme2", 0, 4.0);
         Filme filme3 = new Filme("Titulo Filme3", 0, 3.0);
         List filmes = Arrays.asList(filme1, filme2, filme3);
         //acao
@@ -95,5 +99,18 @@ public class LocacaoServiceTest {
         } catch (LocadoraException e) {
            assertThat(e.getMessage(), is("Usuário não pode ser vazio!"));
         }
+    }
+
+    @Test
+    public void deveDevolverNaSegundaAoAlugarNoSabado() throws FilmeSemEstoqueException, LocadoraException {
+        assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
+
+        //cenario
+        Usuario usuario = new Usuario("Usuario 1");
+        List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 1, 4.0));
+        //acao
+        Locacao locacao = service.alugarFilme(usuario,filmes);
+        //avaliacao
+        assertThat(locacao.getDataRetorno(), caiNaSegunda());
     }
 }

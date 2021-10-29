@@ -16,9 +16,11 @@ public class Filme {
     public String getNome() {
         return nome;
     }
+
     public Integer getEstoque() {
         return estoque;
     }
+
     public Double getPrecoLocacao() {
         return precoLocacao;
     }

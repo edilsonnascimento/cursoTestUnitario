@@ -5,8 +5,11 @@ import static java.util.Calendar.DAY_OF_WEEK;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 
+import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class DataUtils {
     /**
@@ -80,5 +83,10 @@ public class DataUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(data);
         return calendar.get(DAY_OF_WEEK) == diaSemana;
+    }
+
+    public static String diaSemana() {
+        LocalDate data = LocalDate.now();
+        return data.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
     }
 }
