@@ -36,9 +36,4 @@ public class LocacaoService {
 
         return locacao;
     }
-
-    public static void main(String[] args) {
-        new BuilderMaster().gerarCodigoClasse(Locacao.class);
-    }
-
 }

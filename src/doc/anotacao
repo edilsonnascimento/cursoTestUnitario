@@ -58,4 +58,7 @@ Utilizados para facilitar a crição de cenários de testes.
 14 - BuilderMater.java
 Lib para geração de classes builder.
 
+15 - Métricas
+Cobertura de código e todos os testes rodados usar Coverd do Intellij executadondo por classe de teste.
+
 
