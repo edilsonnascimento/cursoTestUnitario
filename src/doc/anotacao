@@ -51,3 +51,6 @@ Utilzado para centralizar alguma regra ou melhorar a legibilidade dos testes.
 12 - Suite de Teste
 Agrupa todos os testes em uma classe.
 Pode colocar um @Before e @Afther antes das classes que estão na suite de teste.
+
+13 - Builders
+Utilizados para facilitar a crição de cenários de testes.

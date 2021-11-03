@@ -1,5 +1,7 @@
 package br.ce.enascimento.service;
 
+import br.ce.enascimento.builders.FilmeBuilder;
+import br.ce.enascimento.builders.UsuarioBuilder;
 import br.ce.enascimento.entidades.Filme;
 import br.ce.enascimento.entidades.Locacao;
 import br.ce.enascimento.entidades.Usuario;
@@ -42,13 +44,13 @@ public class LocacaoServiceTest {
 
     @Test
     public void deve_AlugarFilmes() {
-        assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.WEDNESDAY));
+        assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SUNDAY));
 
         //cenario
-        Usuario usuario = new Usuario("Nome do Usuario");
-        Filme filme1 = new Filme("Titulo Filme1", 2, 5.0);
-        Filme filme2 = new Filme("Titulo Filme2", 2, 4.0);
-        Filme filme3 = new Filme("Titulo Filme3", 1, 3.0);
+        Usuario usuario = UsuarioBuilder.umUsuario().controi();
+        Filme filme1 = new FilmeBuilder().umFilme().constroi();
+        Filme filme2 = new FilmeBuilder().umFilme().constroi();
+        Filme filme3 = new FilmeBuilder().umFilme().constroi();
         List filmes = Arrays.asList(filme1, filme2, filme3);
         Locacao locacao = new Locacao(filmes);
         //acao
@@ -65,11 +67,9 @@ public class LocacaoServiceTest {
     @Test(expected = FilmeSemEstoqueException.class)
     public void deve_LancarExcepetion_Filme_SemEstoque() throws FilmeSemEstoqueException, LocadoraException {
         //cenario
-        Usuario usuario = new Usuario("Nome do Usuario");
-        Filme filme1 = new Filme("Titulo Filme1", 2, 5.0);
-        Filme filme2 = new Filme("Titulo Filme2", 0, 4.0);
-        Filme filme3 = new Filme("Titulo Filme3", 0, 3.0);
-        List filmes = Arrays.asList(filme1, filme2, filme3);
+        Usuario usuario = UsuarioBuilder.umUsuario().controi();
+        Filme filme = new FilmeBuilder().umFilmeSemEstoque().constroi();
+        List filmes = Arrays.asList(filme);
         //acao
         service.alugarFilme(usuario,filmes);
     }
@@ -77,7 +77,7 @@ public class LocacaoServiceTest {
     @Test
     public void deve_LancarExpetion_Filmes_Vazio() throws FilmeSemEstoqueException, LocadoraException {
         //cenario
-        Usuario usuario = new Usuario("Nome do Usuario");
+        Usuario usuario = UsuarioBuilder.umUsuario().controi();
         exception.expect(LocadoraException.class);
         exception.expectMessage("Filmes não podem ser vazio!");
         //acao
@@ -87,9 +87,9 @@ public class LocacaoServiceTest {
     @Test
     public void deve_LancarExcepetion_UsuarioVazio() throws FilmeSemEstoqueException {
         //cenario
-        Filme filme1 = new Filme("Titulo Filme1", 2, 5.0);
-        Filme filme2 = new Filme("Titulo Filme2", 2, 4.0);
-        Filme filme3 = new Filme("Titulo Filme3", 2, 3.0);
+        Filme filme1 = new FilmeBuilder().umFilme().constroi();
+        Filme filme2 = new FilmeBuilder().umFilme().constroi();
+        Filme filme3 = new FilmeBuilder().umFilme().constroi();
         List filmes = Arrays.asList(filme1, filme2, filme3);
 
         //acao
@@ -106,8 +106,8 @@ public class LocacaoServiceTest {
         assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
 
         //cenario
-        Usuario usuario = new Usuario("Usuario 1");
-        List<Filme> filmes = Arrays.asList(new Filme("Filme 1", 1, 4.0));
+        Usuario usuario = UsuarioBuilder.umUsuario().controi();
+        List<Filme> filmes = Arrays.asList(new FilmeBuilder().umFilme().constroi());
         //acao
         Locacao locacao = service.alugarFilme(usuario,filmes);
         //avaliacao
