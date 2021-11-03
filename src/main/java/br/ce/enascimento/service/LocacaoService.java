@@ -6,6 +6,7 @@ import br.ce.enascimento.entidades.Usuario;
 import br.ce.enascimento.exception.FilmeSemEstoqueException;
 import br.ce.enascimento.exception.LocadoraException;
 import br.ce.enascimento.utils.DataUtils;
+import buildermaster.BuilderMaster;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -34,6 +35,10 @@ public class LocacaoService {
         locacao.setDataRetorno(dataEntrega);
 
         return locacao;
+    }
+
+    public static void main(String[] args) {
+        new BuilderMaster().gerarCodigoClasse(Locacao.class);
     }
 
 }

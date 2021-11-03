@@ -13,10 +13,12 @@ public class Locacao {
     private Date dataRetorno;
     private Double valorTotal;
 
+    public Locacao() {
+    }
+
     public Locacao(List<Filme> filmes) {
         this.filmes = filmes;
     }
-
 
     public Locacao setUsuario(Usuario usuario) {
         this.usuario = usuario;

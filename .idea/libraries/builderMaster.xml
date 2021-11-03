@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="builderMaster">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/builde-master/builderMaster.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

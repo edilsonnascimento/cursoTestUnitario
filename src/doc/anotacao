@@ -54,3 +54,8 @@ Pode colocar um @Before e @Afther antes das classes que estão na suite de teste
 
 13 - Builders
 Utilizados para facilitar a crição de cenários de testes.
+
+14 - BuilderMater.java
+Lib para geração de classes builder.
+
+
