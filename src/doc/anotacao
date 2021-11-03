@@ -48,3 +48,6 @@ Teste orientado a dados, também conhecido como teste orientado a tabela ou test
 11 - Matchers Próprios
 Utilzado para centralizar alguma regra ou melhorar a legibilidade dos testes.
 
+12 - Suite de Teste
+Agrupa todos os testes em uma classe.
+Pode colocar um @Before e @Afther antes das classes que estão na suite de teste.
