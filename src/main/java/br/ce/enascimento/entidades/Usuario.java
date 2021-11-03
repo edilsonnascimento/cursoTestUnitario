@@ -37,4 +37,9 @@ public class Usuario implements Pessoa{
     public boolean isVivo() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario com nome=" + nome;
+    }
 }

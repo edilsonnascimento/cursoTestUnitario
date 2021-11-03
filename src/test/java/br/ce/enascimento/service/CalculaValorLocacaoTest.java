@@ -27,7 +27,9 @@ import static org.mockito.Mockito.*;
 public class CalculaValorLocacaoTest {
 
     private LocacaoService service;
+    private SCPService scpService;
     private LocacaoDAO dao;
+    private SendEmailService enviarEmail;
 
     @Parameter
     public List<Filme> filmes;
@@ -49,9 +51,13 @@ public class CalculaValorLocacaoTest {
 
     @Before
     public void setup(){
-        dao = mock(LocacaoImplementDAO.class);
         service = new LocacaoService();
+        dao = mock(LocacaoImplementDAO.class);
         service.setDao(dao);
+        scpService = mock(SCPService.class);
+        service.setScpService(scpService);
+        enviarEmail = mock(SendEmailService.class);
+        service.setEnviarEmail(enviarEmail);
 
     }
 

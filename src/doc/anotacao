@@ -71,3 +71,6 @@ Mokando classe DAO.
 18 - Mokito.when()
 Alterando o comportamento da classe.
 
+19 - Mokito.verify()
+Verificar se um objeto mokado foi realmente chamado.
+

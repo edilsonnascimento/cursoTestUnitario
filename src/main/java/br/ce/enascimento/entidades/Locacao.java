@@ -70,4 +70,8 @@ public class Locacao {
                 .mapToInt(Filme::getEstoque)
                 .count();
     }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
 }

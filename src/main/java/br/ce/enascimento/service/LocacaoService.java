@@ -18,6 +18,7 @@ public class LocacaoService {
 
     private LocacaoDAO dao;
     private SCPService scpService;
+    private SendEmailService enviarEmail;
 
     public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException {
 
@@ -44,11 +45,24 @@ public class LocacaoService {
         return locacao;
     }
 
+    public void notificarAtrasos(){
+        List<Locacao> locacaos = dao.oberterLocacoesPendentes();
+        locacaos.forEach(this::sendEmail);
+    }
+
     public void setDao(LocacaoDAO dao) {
         this.dao = dao;
     }
 
     public void setScpService(SCPService scpService) {
         this.scpService = scpService;
+    }
+
+    private void sendEmail(Locacao locacao) {
+        enviarEmail.notificarAtraso(locacao.getUsuario());
+    }
+
+    public void setEnviarEmail(SendEmailService enviarEmail) {
+        this.enviarEmail = enviarEmail;
     }
 }

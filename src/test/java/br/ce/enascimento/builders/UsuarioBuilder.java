@@ -15,8 +15,15 @@ public class UsuarioBuilder {
         return builder;
     }
 
+    public UsuarioBuilder comNome(String nome){
+        this.usuario.setNome(nome);
+        return this;
+    }
+
     public Usuario controi(){
         return usuario;
     }
+
+
 
 }

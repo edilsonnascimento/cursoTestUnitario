@@ -1,6 +1,7 @@
 package br.ce.enascimento.service;
 
 import br.ce.enascimento.builders.FilmeBuilder;
+import br.ce.enascimento.builders.LocacaoBuilder;
 import br.ce.enascimento.builders.UsuarioBuilder;
 import br.ce.enascimento.dao.LocacaoDAO;
 import br.ce.enascimento.dao.LocacaoImplementDAO;
@@ -29,14 +30,14 @@ import static br.ce.enascimento.matchers.CoreMatcherProprio.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class LocacaoServiceTest {
 
     private LocacaoService service;
     private SCPService scpService;
     private LocacaoDAO dao;
+    private SendEmailService enviarEmail;
 
     @Rule
     public ErrorCollector error = new ErrorCollector();
@@ -46,11 +47,13 @@ public class LocacaoServiceTest {
 
     @Before
     public void setup(){
-        dao = mock(LocacaoImplementDAO.class);
-        scpService = mock(SCPService.class);
         service = new LocacaoService();
+        dao = mock(LocacaoImplementDAO.class);
         service.setDao(dao);
+        scpService = mock(SCPService.class);
         service.setScpService(scpService);
+        enviarEmail = mock(SendEmailService.class);
+        service.setEnviarEmail(enviarEmail);
     }
 
     @Test
@@ -126,15 +129,35 @@ public class LocacaoServiceTest {
     }
 
     @Test
-    public void naoDeveAlugarFilmeParaUsuarioNegativado() throws FilmeSemEstoqueException, LocadoraException {
+    public void naoDeveAlugarFilmeParaUsuarioNegativado() throws FilmeSemEstoqueException{
         //cenario
         Usuario usuario = UsuarioBuilder.umUsuario().controi();
         List<Filme> filmes = Arrays.asList(new FilmeBuilder().umFilme().constroi());
-        exception.expect(LocadoraException.class);
-        exception.expectMessage("Usuário negativado!");
         when(scpService.possuiNegativacao(usuario)).thenReturn(true);
         //acao
-        Locacao locacao = service.alugarFilme(usuario,filmes);
+        try {
+            Locacao locacao = service.alugarFilme(usuario,filmes);
+            fail();
+        } catch (LocadoraException e) {
+            assertThat(e.getMessage(), is("Usuário negativado!"));
+        }
 
+        verify(scpService).possuiNegativacao(usuario);
+    }
+
+    @Test
+    public void deveEnviarEmailParaLocacoesPendentes(){
+        //cenario
+        Usuario usuario1 = UsuarioBuilder.umUsuario().controi();
+        List<Locacao> locacoes = Arrays.asList(LocacaoBuilder
+                .umLocacao()
+                .comDataLocacao(DataUtils.obterDataComDiferencaDias(-2))
+                .comUsuario(usuario1)
+                .agora());
+        when(dao.oberterLocacoesPendentes()).thenReturn(locacoes);
+        //acao
+        service.notificarAtrasos();
+        //verificacao
+        verify(enviarEmail).notificarAtraso(usuario1);
     }
 }
