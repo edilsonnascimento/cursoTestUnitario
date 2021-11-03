@@ -61,4 +61,6 @@ Lib para geração de classes builder.
 15 - Métricas
 Cobertura de código e todos os testes rodados usar Coverd do Intellij executadondo por classe de teste.
 
-
+16 - Testes não devem ter dependencias.
+Mesmo que acesso a camada DAO não deve haver dependencia de banco de dados, rede, serviços externos.
+Pode ser Mokcado.
