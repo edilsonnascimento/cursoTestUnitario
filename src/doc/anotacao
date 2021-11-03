@@ -64,3 +64,6 @@ Cobertura de código e todos os testes rodados usar Coverd do Intellij executado
 16 - Testes não devem ter dependencias.
 Mesmo que acesso a camada DAO não deve haver dependencia de banco de dados, rede, serviços externos.
 Pode ser Mokcado.
+
+17 - Mokito
+Mokcando classe DAO.

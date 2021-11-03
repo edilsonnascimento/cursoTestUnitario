@@ -1,5 +1,7 @@
 package br.ce.enascimento.service;
 
+import br.ce.enascimento.dao.LocacaoDAO;
+import br.ce.enascimento.dao.LocacaoImplementDAO;
 import br.ce.enascimento.entidades.Filme;
 import br.ce.enascimento.entidades.Locacao;
 import br.ce.enascimento.entidades.Usuario;
@@ -11,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
+import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,11 +21,13 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 @RunWith(Parameterized.class)
 public class CalculaValorLocacaoTest {
 
     private LocacaoService service;
+    private LocacaoDAO dao;
 
     @Parameter
     public List<Filme> filmes;
@@ -44,7 +49,10 @@ public class CalculaValorLocacaoTest {
 
     @Before
     public void setup(){
+        dao = mock(LocacaoImplementDAO.class);
         service = new LocacaoService();
+        service.setDao(dao);
+
     }
 
     @Parameters(name="{2}")

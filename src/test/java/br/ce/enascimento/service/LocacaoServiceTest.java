@@ -2,6 +2,8 @@ package br.ce.enascimento.service;
 
 import br.ce.enascimento.builders.FilmeBuilder;
 import br.ce.enascimento.builders.UsuarioBuilder;
+import br.ce.enascimento.dao.LocacaoDAO;
+import br.ce.enascimento.dao.LocacaoImplementDAO;
 import br.ce.enascimento.entidades.Filme;
 import br.ce.enascimento.entidades.Locacao;
 import br.ce.enascimento.entidades.Usuario;
@@ -16,6 +18,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -30,6 +33,7 @@ import static org.junit.Assume.*;
 public class LocacaoServiceTest {
 
     private LocacaoService service;
+    private LocacaoDAO dao;
 
     @Rule
     public ErrorCollector error = new ErrorCollector();
@@ -39,7 +43,10 @@ public class LocacaoServiceTest {
 
     @Before
     public void setup(){
+        dao = Mockito.mock(LocacaoImplementDAO.class);
         service = new LocacaoService();
+        service.setDao(dao);
+
     }
 
     @Test
