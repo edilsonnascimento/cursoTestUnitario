@@ -10,4 +10,10 @@ public class CoreMatcherProprio {
     public static DiaSemanaMatcher caiNaSegunda(){
         return new DiaSemanaMatcher(Calendar.MONDAY);
     }
+    public static DiaAtualMatcher ehHoje(){
+        return new DiaAtualMatcher(0);
+    }
+    public static DiaSemanaMatcher ehHojeComDiferencaDias(Integer dias){
+        return new DiaSemanaMatcher(dias);
+    }
 }

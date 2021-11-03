@@ -42,7 +42,7 @@ public class LocacaoServiceTest {
 
     @Test
     public void deve_AlugarFilmes() {
-        assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SUNDAY));
+        assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.WEDNESDAY));
 
         //cenario
         Usuario usuario = new Usuario("Nome do Usuario");
@@ -57,8 +57,8 @@ public class LocacaoServiceTest {
         } catch (Exception e) {
             //verificacao
             error.checkThat(locacao.getValorTotal(), is(equalTo(12.0)));
-            error.checkThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), is(true));
-            error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), DataUtils.obterDataComDiferencaDias(1)), is(false));
+            error.checkThat(locacao.getDataLocacao(), ehHoje());
+            error.checkThat(locacao.getDataRetorno(), ehHojeComDiferencaDias(1));
         }
     }
 
