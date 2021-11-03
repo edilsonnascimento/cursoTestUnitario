@@ -17,6 +17,7 @@ import static br.ce.enascimento.utils.DataUtils.adicionarDias;
 public class LocacaoService {
 
     private LocacaoDAO dao;
+    private SCPService scpService;
 
     public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException {
 
@@ -36,6 +37,8 @@ public class LocacaoService {
             dataEntrega = adicionarDias(dataEntrega, 1);
         locacao.setDataRetorno(dataEntrega);
 
+        if(scpService.possuiNegativacao(usuario)) throw new LocadoraException("Usuário negativado!");
+
         dao.salvar(locacao);
 
         return locacao;
@@ -43,5 +46,9 @@ public class LocacaoService {
 
     public void setDao(LocacaoDAO dao) {
         this.dao = dao;
+    }
+
+    public void setScpService(SCPService scpService) {
+        this.scpService = scpService;
     }
 }

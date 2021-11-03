@@ -66,4 +66,8 @@ Mesmo que acesso a camada DAO não deve haver dependencia de banco de dados, red
 Pode ser Mokcado.
 
 17 - Mokito
-Mokcando classe DAO.
+Mokando classe DAO.
+
+18 - Mokito.when()
+Alterando o comportamento da classe.
+

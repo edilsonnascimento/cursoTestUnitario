@@ -29,10 +29,13 @@ import static br.ce.enascimento.matchers.CoreMatcherProprio.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class LocacaoServiceTest {
 
     private LocacaoService service;
+    private SCPService scpService;
     private LocacaoDAO dao;
 
     @Rule
@@ -43,10 +46,11 @@ public class LocacaoServiceTest {
 
     @Before
     public void setup(){
-        dao = Mockito.mock(LocacaoImplementDAO.class);
+        dao = mock(LocacaoImplementDAO.class);
+        scpService = mock(SCPService.class);
         service = new LocacaoService();
         service.setDao(dao);
-
+        service.setScpService(scpService);
     }
 
     @Test
@@ -119,5 +123,18 @@ public class LocacaoServiceTest {
         Locacao locacao = service.alugarFilme(usuario,filmes);
         //avaliacao
         assertThat(locacao.getDataRetorno(), caiNaSegunda());
+    }
+
+    @Test
+    public void naoDeveAlugarFilmeParaUsuarioNegativado() throws FilmeSemEstoqueException, LocadoraException {
+        //cenario
+        Usuario usuario = UsuarioBuilder.umUsuario().controi();
+        List<Filme> filmes = Arrays.asList(new FilmeBuilder().umFilme().constroi());
+        exception.expect(LocadoraException.class);
+        exception.expectMessage("Usuário negativado!");
+        when(scpService.possuiNegativacao(usuario)).thenReturn(true);
+        //acao
+        Locacao locacao = service.alugarFilme(usuario,filmes);
+
     }
 }
