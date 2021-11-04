@@ -91,5 +91,9 @@ Verificar se um objeto mokado foi realmente chamado.
 @InjectMocks: cria uma instancia mockada.
 MockitoAnnotations.initMocks(this): ativa as Anotações.
 
+22 - Excpetion When
+Alterando o comportamento do mock para retornar uma excecao.
+when(spcService.possuiNegativacao(usuario)).thenThrow(new Exception("Falha no Serviço SPC!"));
+
 
 

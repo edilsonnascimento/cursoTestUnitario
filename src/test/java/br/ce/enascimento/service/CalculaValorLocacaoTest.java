@@ -31,7 +31,7 @@ public class CalculaValorLocacaoTest {
     @Mock
     private SendEmailService enviarEmail;
     @Mock
-    private SCPService scpService;
+    private SPCService SPCService;
     @InjectMocks
     private LocacaoService service;
 

@@ -1,7 +1,6 @@
 package br.ce.enascimento.service;
 
 import br.ce.enascimento.builders.FilmeBuilder;
-import br.ce.enascimento.builders.UsuarioBuilder;
 import br.ce.enascimento.dao.LocacaoDAO;
 import br.ce.enascimento.entidades.Filme;
 import br.ce.enascimento.entidades.Locacao;
@@ -23,7 +22,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static br.ce.enascimento.builders.FilmeBuilder.umFilme;
 import static br.ce.enascimento.builders.LocacaoBuilder.umaLocacao;
+import static br.ce.enascimento.builders.UsuarioBuilder.*;
 import static br.ce.enascimento.matchers.CoreMatcherProprio.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -36,7 +37,7 @@ import static org.mockito.Mockito.*;
 public class LocacaoServiceTest {
 
     @Mock
-    private SCPService scpService;
+    private SPCService spcService;
     @Mock
     private LocacaoDAO dao;
     @Mock
@@ -60,7 +61,7 @@ public class LocacaoServiceTest {
         assumeFalse(DataUtils.verificarDiaSemana(new Date(), Calendar.SUNDAY));
 
         //cenario
-        Usuario usuario = UsuarioBuilder.umUsuario().controi();
+        Usuario usuario = umUsuario().controi();
         Filme filme1 = new FilmeBuilder().umFilme().constroi();
         Filme filme2 = new FilmeBuilder().umFilme().constroi();
         Filme filme3 = new FilmeBuilder().umFilme().constroi();
@@ -80,7 +81,7 @@ public class LocacaoServiceTest {
     @Test(expected = FilmeSemEstoqueException.class)
     public void deve_LancarExcepetion_Filme_SemEstoque() throws FilmeSemEstoqueException, LocadoraException {
         //cenario
-        Usuario usuario = UsuarioBuilder.umUsuario().controi();
+        Usuario usuario = umUsuario().controi();
         Filme filme = new FilmeBuilder().umFilmeSemEstoque().constroi();
         List filmes = Arrays.asList(filme);
         //acao
@@ -90,7 +91,7 @@ public class LocacaoServiceTest {
     @Test
     public void deve_LancarExpetion_Filmes_Vazio() throws FilmeSemEstoqueException, LocadoraException {
         //cenario
-        Usuario usuario = UsuarioBuilder.umUsuario().controi();
+        Usuario usuario = umUsuario().controi();
         exception.expect(LocadoraException.class);
         exception.expectMessage("Filmes não podem ser vazio!");
         //acao
@@ -119,7 +120,7 @@ public class LocacaoServiceTest {
         assumeTrue(DataUtils.verificarDiaSemana(new Date(), Calendar.SATURDAY));
 
         //cenario
-        Usuario usuario = UsuarioBuilder.umUsuario().controi();
+        Usuario usuario = umUsuario().controi();
         List<Filme> filmes = Arrays.asList(new FilmeBuilder().umFilme().constroi());
         //acao
         Locacao locacao = service.alugarFilme(usuario,filmes);
@@ -128,11 +129,11 @@ public class LocacaoServiceTest {
     }
 
     @Test
-    public void naoDeveAlugarFilmeParaUsuarioNegativado() throws FilmeSemEstoqueException{
+    public void naoDeveAlugarFilmeParaUsuarioNegativado() throws Exception {
         //cenario
-        Usuario usuario = UsuarioBuilder.umUsuario().controi();
+        Usuario usuario = umUsuario().controi();
         List<Filme> filmes = Arrays.asList(new FilmeBuilder().umFilme().constroi());
-        when(scpService.possuiNegativacao(usuario)).thenReturn(true);
+        when(spcService.possuiNegativacao(usuario)).thenReturn(true);
         //acao
         try {
             Locacao locacao = service.alugarFilme(usuario,filmes);
@@ -141,15 +142,15 @@ public class LocacaoServiceTest {
             assertThat(e.getMessage(), is("Usuário negativado!"));
         }
 
-        verify(scpService).possuiNegativacao(usuario);
+        verify(spcService).possuiNegativacao(usuario);
     }
 
     @Test
     public void deveEnviarEmailParaLocacoesPendentes(){
         //cenario
-        Usuario usuario1 = UsuarioBuilder.umUsuario().comNome("Usuario atrasado").controi();
-        Usuario usuario2 = UsuarioBuilder.umUsuario().comNome("Usuario em dia").controi();
-        Usuario usuario3 = UsuarioBuilder.umUsuario().comNome("Outro Usuario atrasado").controi();
+        Usuario usuario1 = umUsuario().comNome("Usuario atrasado").controi();
+        Usuario usuario2 = umUsuario().comNome("Usuario em dia").controi();
+        Usuario usuario3 = umUsuario().comNome("Outro Usuario atrasado").controi();
         List<Locacao> locacoes = Arrays.asList(
                 umaLocacao().comAtraso().comUsuario(usuario1).constroi(),
                 umaLocacao().comUsuario(usuario2).constroi(),
@@ -164,6 +165,19 @@ public class LocacaoServiceTest {
         verify(enviarEmail, never()).notificarAtraso(usuario2);
         verify(enviarEmail, times(3)).notificarAtraso(any());
         verifyNoMoreInteractions(enviarEmail);
-        verifyZeroInteractions(scpService);
+        verifyZeroInteractions(spcService);
+    }
+
+    @Test
+    public void deveTratarExceptionDoServicoSCP() throws Exception {
+        //cenario
+        Usuario usuario = umUsuario().controi();
+        List<Filme> filmes = Arrays.asList(umFilme().constroi());
+        when(spcService.possuiNegativacao(usuario)).thenThrow(new Exception("Falha no Serviço SPC!"));
+        //verificacao
+        exception.expect(LocadoraException.class);
+        exception.expectMessage("Serviço SPC indisponível tente mais tarde.");
+        //acao
+        service.alugarFilme(usuario, filmes);
     }
 }
