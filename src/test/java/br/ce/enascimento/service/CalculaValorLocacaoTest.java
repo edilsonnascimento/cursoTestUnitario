@@ -1,7 +1,6 @@
 package br.ce.enascimento.service;
 
 import br.ce.enascimento.dao.LocacaoDAO;
-import br.ce.enascimento.dao.LocacaoImplementDAO;
 import br.ce.enascimento.entidades.Filme;
 import br.ce.enascimento.entidades.Locacao;
 import br.ce.enascimento.entidades.Usuario;
@@ -13,7 +12,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameter;
 import org.junit.runners.Parameterized.Parameters;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,15 +22,18 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
 
 @RunWith(Parameterized.class)
 public class CalculaValorLocacaoTest {
 
-    private LocacaoService service;
-    private SCPService scpService;
+    @Mock
     private LocacaoDAO dao;
+    @Mock
     private SendEmailService enviarEmail;
+    @Mock
+    private SCPService scpService;
+    @InjectMocks
+    private LocacaoService service;
 
     @Parameter
     public List<Filme> filmes;
@@ -51,14 +55,7 @@ public class CalculaValorLocacaoTest {
 
     @Before
     public void setup(){
-        service = new LocacaoService();
-        dao = mock(LocacaoImplementDAO.class);
-        service.setDao(dao);
-        scpService = mock(SCPService.class);
-        service.setScpService(scpService);
-        enviarEmail = mock(SendEmailService.class);
-        service.setEnviarEmail(enviarEmail);
-
+        MockitoAnnotations.initMocks(this);
     }
 
     @Parameters(name="{2}")

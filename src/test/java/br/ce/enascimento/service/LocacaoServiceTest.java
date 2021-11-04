@@ -1,44 +1,48 @@
 package br.ce.enascimento.service;
 
 import br.ce.enascimento.builders.FilmeBuilder;
-import br.ce.enascimento.builders.LocacaoBuilder;
 import br.ce.enascimento.builders.UsuarioBuilder;
 import br.ce.enascimento.dao.LocacaoDAO;
-import br.ce.enascimento.dao.LocacaoImplementDAO;
 import br.ce.enascimento.entidades.Filme;
 import br.ce.enascimento.entidades.Locacao;
 import br.ce.enascimento.entidades.Usuario;
 import br.ce.enascimento.exception.FilmeSemEstoqueException;
 import br.ce.enascimento.exception.LocadoraException;
-import br.ce.enascimento.matchers.CoreMatcherProprio;
-import br.ce.enascimento.matchers.DiaSemanaMatcher;
 import br.ce.enascimento.utils.DataUtils;
-import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static br.ce.enascimento.builders.LocacaoBuilder.*;
+import static br.ce.enascimento.builders.LocacaoBuilder.umaLocacao;
 import static br.ce.enascimento.matchers.CoreMatcherProprio.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-import static org.junit.Assume.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
 import static org.mockito.Mockito.*;
 
 public class LocacaoServiceTest {
 
-    private LocacaoService service;
+    @Mock
     private SCPService scpService;
+    @Mock
     private LocacaoDAO dao;
+    @Mock
     private SendEmailService enviarEmail;
+    @InjectMocks
+    private LocacaoService service;
 
     @Rule
     public ErrorCollector error = new ErrorCollector();
@@ -48,13 +52,7 @@ public class LocacaoServiceTest {
 
     @Before
     public void setup(){
-        service = new LocacaoService();
-        dao = mock(LocacaoImplementDAO.class);
-        service.setDao(dao);
-        scpService = mock(SCPService.class);
-        service.setScpService(scpService);
-        enviarEmail = mock(SendEmailService.class);
-        service.setEnviarEmail(enviarEmail);
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test

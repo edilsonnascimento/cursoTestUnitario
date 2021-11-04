@@ -86,4 +86,10 @@ Verificar se um objeto mokado foi realmente chamado.
 //Verifica a quantidade de chamadas do método enviar email
   verify(enviarEmail, times(3)).notificarAtraso(any());
 
+21 - Anotações
+@Mock: mocka dependencias da classe.
+@InjectMocks: cria uma instancia mockada.
+MockitoAnnotations.initMocks(this): ativa as Anotações.
+
+
 

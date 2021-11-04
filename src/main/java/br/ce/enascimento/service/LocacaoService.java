@@ -52,16 +52,4 @@ public class LocacaoService {
                 enviarEmail.notificarAtraso(locacao.getUsuario());
         });
     }
-
-    public void setDao(LocacaoDAO dao) {
-        this.dao = dao;
-    }
-
-    public void setScpService(SCPService scpService) {
-        this.scpService = scpService;
-    }
-
-    public void setEnviarEmail(SendEmailService enviarEmail) {
-        this.enviarEmail = enviarEmail;
-    }
 }
