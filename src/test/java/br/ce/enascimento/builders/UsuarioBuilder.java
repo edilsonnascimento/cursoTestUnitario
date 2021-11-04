@@ -24,6 +24,4 @@ public class UsuarioBuilder {
         return usuario;
     }
 
-
-
 }

@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static br.ce.enascimento.builders.LocacaoBuilder.*;
 import static br.ce.enascimento.matchers.CoreMatcherProprio.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -148,16 +149,23 @@ public class LocacaoServiceTest {
     @Test
     public void deveEnviarEmailParaLocacoesPendentes(){
         //cenario
-        Usuario usuario1 = UsuarioBuilder.umUsuario().controi();
-        List<Locacao> locacoes = Arrays.asList(LocacaoBuilder
-                .umLocacao()
-                .comDataLocacao(DataUtils.obterDataComDiferencaDias(-2))
-                .comUsuario(usuario1)
-                .agora());
+        Usuario usuario1 = UsuarioBuilder.umUsuario().comNome("Usuario atrasado").controi();
+        Usuario usuario2 = UsuarioBuilder.umUsuario().comNome("Usuario em dia").controi();
+        Usuario usuario3 = UsuarioBuilder.umUsuario().comNome("Outro Usuario atrasado").controi();
+        List<Locacao> locacoes = Arrays.asList(
+                umaLocacao().comAtraso().comUsuario(usuario1).constroi(),
+                umaLocacao().comUsuario(usuario2).constroi(),
+                umaLocacao().comAtraso().comUsuario(usuario3).constroi(),
+                umaLocacao().comAtraso().comUsuario(usuario3).constroi());
         when(dao.oberterLocacoesPendentes()).thenReturn(locacoes);
         //acao
         service.notificarAtrasos();
         //verificacao
         verify(enviarEmail).notificarAtraso(usuario1);
+        verify(enviarEmail, times(2)).notificarAtraso(usuario3);
+        verify(enviarEmail, never()).notificarAtraso(usuario2);
+        verify(enviarEmail, times(3)).notificarAtraso(any());
+        verifyNoMoreInteractions(enviarEmail);
+        verifyZeroInteractions(scpService);
     }
 }

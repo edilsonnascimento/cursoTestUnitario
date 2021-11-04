@@ -47,7 +47,10 @@ public class LocacaoService {
 
     public void notificarAtrasos(){
         List<Locacao> locacaos = dao.oberterLocacoesPendentes();
-        locacaos.forEach(this::sendEmail);
+        locacaos.forEach(locacao -> {
+            if(locacao.getDataRetorno().before(new Date()))
+                enviarEmail.notificarAtraso(locacao.getUsuario());
+        });
     }
 
     public void setDao(LocacaoDAO dao) {
@@ -56,10 +59,6 @@ public class LocacaoService {
 
     public void setScpService(SCPService scpService) {
         this.scpService = scpService;
-    }
-
-    private void sendEmail(Locacao locacao) {
-        enviarEmail.notificarAtraso(locacao.getUsuario());
     }
 
     public void setEnviarEmail(SendEmailService enviarEmail) {

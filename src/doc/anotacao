@@ -74,3 +74,16 @@ Alterando o comportamento da classe.
 19 - Mokito.verify()
 Verificar se um objeto mokado foi realmente chamado.
 
+20 - Mokito.verify() part 2
+//verifica enviarEmail foi chamado para usuario3
+  verify(enviarEmail).notificarAtraso(usuario3);
+//enviarEmail nunca deve ser chamada para usuário 2
+  verify(enviarEmail, never()).notificarAtraso(usuario2);
+//nao deve ter mais intereções do método
+  verifyNoMoreInteractions(enviarEmail);
+//não deve invocar o método scp
+  verifyZeroInteractions(scpService);
+//Verifica a quantidade de chamadas do método enviar email
+  verify(enviarEmail, times(3)).notificarAtraso(any());
+
+

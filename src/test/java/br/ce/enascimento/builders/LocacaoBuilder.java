@@ -8,13 +8,15 @@ import java.util.Date;
 import br.ce.enascimento.entidades.Locacao;
 import br.ce.enascimento.utils.DataUtils;
 
+import static br.ce.enascimento.utils.DataUtils.*;
+
 
 public class LocacaoBuilder {
 
     private Locacao locacao;
     private LocacaoBuilder(){}
 
-    public static LocacaoBuilder umLocacao() {
+    public static LocacaoBuilder umaLocacao() {
         LocacaoBuilder builder = new LocacaoBuilder();
         inicializarDadosPadroes(builder);
         return builder;
@@ -28,7 +30,7 @@ public class LocacaoBuilder {
         locacao.setUsuario(UsuarioBuilder.umUsuario().controi());
         locacao.setFilmes(Arrays.asList(FilmeBuilder.umFilme().constroi()));
         locacao.setDataLocacao(new Date());
-        locacao.setDataRetorno(DataUtils.adicionarDias(new Date(), 1));
+        locacao.setDataRetorno(adicionarDias(new Date(), 1));
         locacao.setValorTotal();
     }
 
@@ -56,8 +58,13 @@ public class LocacaoBuilder {
         locacao.setValorTotal();
         return this;
     }
-
-    public Locacao agora() {
+    public LocacaoBuilder comAtraso(){
+        locacao.setDataLocacao(obterDataComDiferencaDias(-4));
+        locacao.setDataRetorno(obterDataComDiferencaDias(-2));
+        return this;
+    }
+    public Locacao constroi() {
         return locacao;
     }
+
 }
