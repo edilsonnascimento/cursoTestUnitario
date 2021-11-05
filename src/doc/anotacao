@@ -95,5 +95,14 @@ MockitoAnnotations.initMocks(this): ativa as Anotações.
 Alterando o comportamento do mock para retornar uma excecao.
 when(spcService.possuiNegativacao(usuario)).thenThrow(new Exception("Falha no Serviço SPC!"));
 
-
-
+23 - Capturando argumentos
+Captura instancias dentro do método testado
+1 - Declara um ArgumentCaptor
+ArgumentCaptor<Locacao> locacaoCaptor = ArgumentCaptor.forClass(Locacao.class);
+2 - Executa a ação
+service.prorrogarLocacao(locacao, dias);
+3 - Chama verify passando locacaoCaptor por argumento.
+verify(dao).salvar(locacaoCaptor.capture());
+4 - Atribuir o valor capturado a outro objeto
+Locacao novaLocacao = locacaoCaptor.getValue();
+5 - Criar asserts do valor capturado.

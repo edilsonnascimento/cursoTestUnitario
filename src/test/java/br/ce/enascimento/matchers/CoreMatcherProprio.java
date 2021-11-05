@@ -13,7 +13,7 @@ public class CoreMatcherProprio {
     public static DiaAtualMatcher ehHoje(){
         return new DiaAtualMatcher(0);
     }
-    public static DiaSemanaMatcher ehHojeComDiferencaDias(Integer dias){
-        return new DiaSemanaMatcher(dias);
+    public static DiaAtualMatcher ehHojeComDiferencaDias(Integer dias){
+        return new DiaAtualMatcher(dias);
     }
 }

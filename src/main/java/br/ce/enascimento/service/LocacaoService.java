@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import static br.ce.enascimento.utils.DataUtils.adicionarDias;
+import static br.ce.enascimento.utils.DataUtils.obterDataComDiferencaDias;
 
 public class LocacaoService {
 
@@ -58,4 +59,15 @@ public class LocacaoService {
                 enviarEmail.notificarAtraso(locacao.getUsuario());
         });
     }
+
+    public void prorrogarLocacao(Locacao locacao, Integer quantidadeDias){
+        Locacao novaLocacao = new Locacao();
+        novaLocacao.setUsuario(locacao.getUsuario());
+        novaLocacao.setFilmes(locacao.getFilmes());
+        novaLocacao.setDataLocacao(locacao.getDataLocacao());
+        novaLocacao.setDataRetorno(obterDataComDiferencaDias(quantidadeDias));
+        novaLocacao.setValorTotal(locacao.getValorTotal() * quantidadeDias);
+        dao.salvar(novaLocacao);
+    }
+
 }

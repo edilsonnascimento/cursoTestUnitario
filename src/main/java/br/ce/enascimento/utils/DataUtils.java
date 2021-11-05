@@ -5,6 +5,8 @@ import static java.util.Calendar.DAY_OF_WEEK;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.Calendar;
@@ -88,5 +90,10 @@ public class DataUtils {
     public static String diaSemana() {
         LocalDate data = LocalDate.now();
         return data.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault());
+    }
+
+    public static String dataFormatada(Date data){
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/YYYY");
+        return dateFormat.format(data);
     }
 }

@@ -30,6 +30,10 @@ public class Locacao {
         return this;
     }
 
+    public List<Filme> getFilmes() {
+        return filmes;
+    }
+
     public Date getDataLocacao() {
         return dataLocacao;
     }
@@ -52,6 +56,9 @@ public class Locacao {
         this.valorTotal = filmes.stream().mapToDouble(Filme::getPrecoLocacao).sum();
     }
 
+    public void setValorTotal(Double valorTotal){
+        this.valorTotal  = valorTotal;
+    }
     public Double getValorTotal() {
         return aplicarDesconto();
     }

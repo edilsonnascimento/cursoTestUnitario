@@ -13,6 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -179,5 +180,21 @@ public class LocacaoServiceTest {
         exception.expectMessage("Serviço SPC indisponível tente mais tarde.");
         //acao
         service.alugarFilme(usuario, filmes);
+    }
+
+    @Test
+    public void deveProrrogarUmaLocacao(){
+        //cenario
+        int dias = 2;
+        Locacao locacao = umaLocacao().constroi();
+        ArgumentCaptor<Locacao> locacaoCaptor = ArgumentCaptor.forClass(Locacao.class);
+        //acao
+        service.prorrogarLocacao(locacao, dias);
+        //verificação
+        verify(dao).salvar(locacaoCaptor.capture());
+        Locacao novaLocacao = locacaoCaptor.getValue();
+        error.checkThat(novaLocacao.getDataLocacao(), ehHoje());
+        error.checkThat(novaLocacao.getDataRetorno(), ehHojeComDiferencaDias(dias));
+        error.checkThat(novaLocacao.getValorTotal(), is(8.0));
     }
 }
