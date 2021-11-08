@@ -20,11 +20,12 @@ public class LocacaoService {
     private LocacaoDAO dao;
     private SPCService spcService;
     private SendEmailService enviarEmail;
+    private Locacao locacao;
 
     public Locacao alugarFilme(Usuario usuario, List<Filme> filmes) throws FilmeSemEstoqueException, LocadoraException {
 
         if(filmes == null|| filmes.isEmpty()) throw new LocadoraException("Filmes não podem ser vazio!");
-        Locacao locacao = new Locacao(filmes);
+        locacao = new Locacao(filmes);
         if(usuario == null) throw new LocadoraException("Usuário não pode ser vazio!");
         if(locacao.filmeSemEstoque()) throw new FilmeSemEstoqueException();
 
@@ -33,11 +34,7 @@ public class LocacaoService {
         locacao.setDataLocacao(new Date());
         locacao.setValorTotal();
 
-        Date dataEntrega = new Date();
-        dataEntrega = adicionarDias(dataEntrega, 1);
-        if(DataUtils.verificarDiaSemana(dataEntrega, Calendar.SUNDAY))
-            dataEntrega = adicionarDias(dataEntrega, 1);
-        locacao.setDataRetorno(dataEntrega);
+        locacao.setDataRetorno(calculaDataEntrega());
 
         boolean negativado;
         try {
@@ -50,6 +47,14 @@ public class LocacaoService {
         dao.salvar(locacao);
 
         return locacao;
+    }
+
+    private Date calculaDataEntrega() {
+        Date dataEntrega = new Date();
+        dataEntrega = adicionarDias(dataEntrega, 1);
+        if(DataUtils.verificarDiaSemana(dataEntrega, Calendar.SUNDAY))
+            dataEntrega = adicionarDias(dataEntrega, 1);
+        return dataEntrega;
     }
 
     public void notificarAtrasos(){
@@ -69,5 +74,4 @@ public class LocacaoService {
         novaLocacao.setValorTotal(locacao.getValorTotal() * quantidadeDias);
         dao.salvar(novaLocacao);
     }
-
 }

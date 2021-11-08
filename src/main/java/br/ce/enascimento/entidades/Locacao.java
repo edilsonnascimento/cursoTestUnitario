@@ -81,4 +81,5 @@ public class Locacao {
     public Usuario getUsuario() {
         return usuario;
     }
+
 }

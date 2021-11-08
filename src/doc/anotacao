@@ -116,3 +116,7 @@ Mockar construtor do objeto.
 Alterar comportamento de objetos estaticos
 Metodos privados
 Frameork extende ao mockito e resolve os problemas acima.
+
+26 - PowerMokito métos privados.
+Mockando métodos privados.
+PowerMockito.doReturn(obterDataComDiferencaDias(5)).when(service, "calculaDataEntrega");
