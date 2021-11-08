@@ -111,4 +111,8 @@ Locacao novaLocacao = locacaoCaptor.getValue();
 Semelhante ao Mock funciona para classes concretas.
 Quando não sabe o que fazer retorna o resultado do métdo não o valor padrão como o Mock.
 
-
+25 - PowerMockito
+Mockar construtor do objeto.
+Alterar comportamento de objetos estaticos
+Metodos privados
+Frameork extende ao mockito e resolve os problemas acima.
