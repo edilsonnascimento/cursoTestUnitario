@@ -110,3 +110,5 @@ Locacao novaLocacao = locacaoCaptor.getValue();
 24 - Spy
 Semelhante ao Mock funciona para classes concretas.
 Quando não sabe o que fazer retorna o resultado do métdo não o valor padrão como o Mock.
+
+
