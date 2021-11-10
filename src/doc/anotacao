@@ -117,6 +117,15 @@ Alterar comportamento de objetos estaticos
 Metodos privados
 Frameork extende ao mockito e resolve os problemas acima.
 
-26 - PowerMokito métos privados.
+26 - PowerMockito métos privados.
 Mockando métodos privados.
 PowerMockito.doReturn(obterDataComDiferencaDias(5)).when(service, "calculaDataEntrega");
+
+27 - PowerMockito testando métodos privados
+ //ação
+Date dataRetorno = Whitebox.invokeMethod(service, "calculaDataEntrega");
+ //verificação
+assertThat(DataUtils.isMesmaData(dataRetorno, obterDataComDiferencaDias(1)), is(true));
+
+28 - Sem utilizar PoweMockito
+Utilizando Reflexao do java e Spy para não utilizar mockito

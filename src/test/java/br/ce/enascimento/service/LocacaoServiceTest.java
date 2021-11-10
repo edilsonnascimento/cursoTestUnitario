@@ -208,6 +208,17 @@ public class LocacaoServiceTest {
         Locacao locacao = service.alugarFilme(usuario,filmes);
         //verificacao
         assertThat(DataUtils.isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(5)), is(true));
+        PowerMockito.verifyPrivate(service).invoke("calculaDataEntrega");
+    }
+
+    @Test
+    public void deveCalcularDataRetorno() throws Exception {
+        //cenário
+        //ação
+        Date dataRetorno = Whitebox.invokeMethod(service, "calculaDataEntrega");
+        //verificação
+        assertThat(DataUtils.isMesmaData(dataRetorno, obterDataComDiferencaDias(1)), is(true));
+
     }
 
 }

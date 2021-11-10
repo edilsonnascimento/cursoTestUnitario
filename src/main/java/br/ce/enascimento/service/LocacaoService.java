@@ -31,7 +31,7 @@ public class LocacaoService {
 
         locacao.setFilmes(filmes);
         locacao.setUsuario(usuario);
-        locacao.setDataLocacao(new Date());
+        locacao.setDataLocacao(getNovaData());
         locacao.setValorTotal();
 
         locacao.setDataRetorno(calculaDataEntrega());
@@ -50,17 +50,21 @@ public class LocacaoService {
     }
 
     private Date calculaDataEntrega() {
-        Date dataEntrega = new Date();
+        Date dataEntrega = getNovaData();
         dataEntrega = adicionarDias(dataEntrega, 1);
         if(DataUtils.verificarDiaSemana(dataEntrega, Calendar.SUNDAY))
             dataEntrega = adicionarDias(dataEntrega, 1);
         return dataEntrega;
     }
 
+    protected Date getNovaData() {
+        return new Date();
+    }
+
     public void notificarAtrasos(){
         List<Locacao> locacaos = dao.oberterLocacoesPendentes();
         locacaos.forEach(locacao -> {
-            if(locacao.getDataRetorno().before(new Date()))
+            if(locacao.getDataRetorno().before(getNovaData()))
                 enviarEmail.notificarAtraso(locacao.getUsuario());
         });
     }
