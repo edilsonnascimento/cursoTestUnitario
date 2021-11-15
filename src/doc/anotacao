@@ -129,3 +129,7 @@ assertThat(DataUtils.isMesmaData(dataRetorno, obterDataComDiferencaDias(1)), is(
 
 28 - Sem utilizar PoweMockito
 Utilizando Reflexao do java e Spy para não utilizar mockito
+
+29 - Executando testes em Parelelo
+Criar um Running expecifico já que o JUniti não suportanativamente esa função.
+@RunWith(ParalleRunner.class)

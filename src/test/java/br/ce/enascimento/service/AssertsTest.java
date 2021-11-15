@@ -3,7 +3,9 @@ package br.ce.enascimento.service;
 import br.ce.enascimento.entidades.Funcionario;
 import br.ce.enascimento.entidades.Pessoa;
 import br.ce.enascimento.entidades.Usuario;
+import br.ce.enascimento.runners.ParalleRunner;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
